@@ -1,0 +1,50 @@
+1. Filebeat
+./filebeat -e -c filebeat.yml -d "publish"
+
+filebeat.yml
+filebeat.inputs:
+- type: log
+  paths:
+    - /var/log/*.log
+output.logstash:
+  hosts: ["localhost:5044"]
+
+2. Logstash
+./bin/logstash -f ./logstash.conf 
+
+logstash.conf
+input {
+   beats { 
+      port => "5044"
+   }
+}
+output {
+   file {
+      path => "/Users/Guangjie.Feng/localdisk/elastic/logstash-8.4.1/outlog.log"
+   }
+}
+
+
+
+
+✅ Elasticsearch security features have been automatically configured!
+✅ Authentication is enabled and cluster connections are encrypted.
+
+ℹ️  Password for the elastic user (reset with `bin/elasticsearch-reset-password -u elastic`):
+  qONFjfVMUQ-UsXqXk=n_
+
+ℹ️  HTTP CA certificate SHA-256 fingerprint:
+  6bc462c00ee613d522bb96d55b23cfaa394e9a7bd7f05bc07ca1050c6ecf924f
+
+ℹ️  Configure Kibana to use this cluster:
+• Run Kibana and click the configuration link in the terminal when Kibana starts.
+• Copy the following enrollment token and paste it into Kibana in your browser (valid for the next 30 minutes):
+  eyJ2ZXIiOiI4LjQuMSIsImFkciI6WyIxOTIuMTY4LjEuMTA0OjkyMDAiXSwiZmdyIjoiNmJjNDYyYzAwZWU2MTNkNTIyYmI5NmQ1NWIyM2NmYWEzOTRlOWE3YmQ3ZjA1YmMwN2NhMTA1MGM2ZWNmOTI0ZiIsImtleSI6InRLUGpIb01CMjJJMnJSbk5nTlItOnkxdG5wdnFkUWRpd3ZjMWRRSm5vX0EifQ==
+
+ℹ️  Configure other nodes to join this cluster:
+• On this node:
+  ⁃ Create an enrollment token with `bin/elasticsearch-create-enrollment-token -s node`.
+  ⁃ Uncomment the transport.host setting at the end of config/elasticsearch.yml.
+  ⁃ Restart Elasticsearch.
+• On other nodes:
+  ⁃ Start Elasticsearch with `bin/elasticsearch --enrollment-token <token>`, using the enrollment token that you generated.
